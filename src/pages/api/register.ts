@@ -6,11 +6,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
-    return res.status(404).end();
-  }
-
   try {
+    if (req.method !== "POST") {
+      return res.status(405).end();
+    }
+
     const { email, name, password } = req.body;
 
     const existingUser = await prismadb.user.findUnique({
@@ -19,10 +19,10 @@ export default async function handler(
       },
     });
 
+    console.log("%cexistingUser", "color: green", existingUser);
+
     if (existingUser) {
-      return res.status(200).json({
-        error: "Email token",
-      });
+      return res.status(422).json({ error: "Email taken" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -38,8 +38,7 @@ export default async function handler(
     });
 
     return res.status(200).json(user);
-  } catch (e) {
-    console.error(e);
-    return res.status(400).end();
+  } catch (error) {
+    return res.status(400).json({ error: `Something went wrong: ${error}` });
   }
 }
