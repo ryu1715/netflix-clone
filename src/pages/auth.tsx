@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import Input from "@/components/Input";
 import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 const Auth = () => {
   const router = useRouter();
@@ -85,6 +87,14 @@ const Auth = () => {
               >
                 {variant === "register" ? "Sign up" : "Login"}
               </button>
+              <div className="flex flex-row items-center gap-4 mt-8 justify-center">
+                <div className="w-10 h-10 bg-white flex items-center justify-center cursor-pointer hover:opacity-80 rounded-full">
+                  <FcGoogle size={30} />
+                </div>
+                <div className="w-10 h-10 bg-white flex items-center justify-center cursor-pointer hover:opacity-80 rounded-full">
+                  <FaGithub size={35} />
+                </div>
+              </div>
               <p className="text-neutral-500 mt-12">
                 {variant === "login"
                   ? "First time using Netflix?"
